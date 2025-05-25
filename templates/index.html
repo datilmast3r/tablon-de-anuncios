@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tablón de Anuncios</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>TABLÓN DE ANUNCIOS</h1>
+    <div class="container">
+
+        <div id="posts-column" class="posts-column">
+            <!-- Las tarjetas de los posts se insertarán aquí -->
+        </div>
+
+        <div class="add-post-form">
+            <form id="new-post-form">
+                <div>
+                    <label for="user_name">Nombre de Usuario:</label>
+                    <input type="text" id="user_name" name="user_name" required>
+                </div>
+                <label for="message">Mensaje:</label>
+                <div class="form-row">
+                    <textarea id="message" name="message" required></textarea>
+                    <button type="submit" aria-label="Enviar Post" title="Enviar Post">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+                            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                        </svg>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const postsColumn = document.getElementById('posts-column');
+        const newPostForm = document.getElementById('new-post-form');
+
+        async function fetchPosts() {
+            try {
+                const response = await fetch('/posts');
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                const posts = await response.json();
+                
+                postsColumn.innerHTML = ''; // Limpiar posts existentes
+                posts.forEach(post => {
+                    const postCard = document.createElement('div');
+                    postCard.className = 'post-card';
+                    postCard.innerHTML = `
+                        <div class="header">
+                            <span class="user-name">${post.user_name}</span>
+                            <span class="created-at">${new Date(post.created_at).toLocaleString()}</span>
+                        </div>
+                        <div class="message">${post.message}</div>
+                    `;
+                    postsColumn.appendChild(postCard);
+                });
+            } catch (error) {
+                console.error("Error al cargar los posts:", error);
+                postsColumn.innerHTML = "<p>Error al cargar los posts. Inténtalo de nuevo más tarde.</p>";
+            }
+        }
+
+        newPostForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const userName = document.getElementById('user_name').value;
+            const message = document.getElementById('message').value;
+
+            try {
+                const response = await fetch('/posts', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ user_name: userName, message: message }),
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+                }
+                
+                // Limpiar formulario y recargar posts
+                newPostForm.reset();
+                fetchPosts();
+
+            } catch (error) {
+                console.error("Error al añadir el post:", error);
+                alert(`Error al añadir el post: ${error.message}`);
+            }
+        });
+
+        // Cargar posts iniciales
+        fetchPosts();
+    </script>
+</body>
+</html>

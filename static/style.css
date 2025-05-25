@@ -1,0 +1,138 @@
+:root {
+    --page-bg: #EAEAEA; /* Fondo general de la página */
+    --corkboard-bg: #D2B48C; /* Color base para la corchera (tan) */
+    --sticky-note-bg: #FFFFE0; /* Amarillo claro para los post-its */
+    --sticky-note-shadow: rgba(0, 0, 0, 0.25);
+    --form-bg: #F8F9FA; /* Color claro para el formulario */
+    --text-color-primary: #333;
+    --text-color-secondary: #555;
+    --text-color-tertiary: #777;
+    --border-color-light: #ddd;
+    --border-color-darker: #ccc;
+    --brand-primary: #007bff;
+    --brand-primary-hover: #0056b3;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: sans-serif;
+    margin: 0;
+    background-color: var(--page-bg);
+    color: var(--text-color-primary);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+.container {
+    width: 80%;
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: var(--corkboard-bg); /* Fondo de corchera */
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2); /* Sombra para la corchera */
+    border-radius: 8px;
+}
+h1 {
+    text-align: center;
+    margin-top: 20px; /* Espacio arriba del título */
+    color: var(--text-color-primary);
+    margin-bottom: 30px; /* Más espacio debajo del título */
+}
+.posts-column {
+    margin-top: 20px;
+}
+.post-card {
+    background-color: var(--sticky-note-bg); /* Color de post-it */
+    border: 1px solid #E0DCB7; /* Borde sutil para el post-it */
+    border-radius: 3px; /* Bordes ligeramente redondeados */
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 3px 3px 5px var(--sticky-note-shadow); /* Sombra más pronunciada */
+    transform: rotate(-1.5deg); /* Ligera rotación */
+    transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+}
+
+.post-card:hover {
+    transform: rotate(0deg) scale(1.02); /* Se endereza y agranda un poco al pasar el ratón */
+    box-shadow: 5px 5px 10px var(--sticky-note-shadow);
+}
+
+.post-card .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 0.9em;
+    color: var(--text-color-secondary);
+}
+.post-card .message {
+    margin-top: 10px;
+    line-height: 1.6;
+}
+.add-post-form {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: var(--form-bg); /* Color del formulario */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border-radius: 5px;
+}
+.add-post-form h2 {
+    margin-top: 0;
+    text-align: center;
+}
+.add-post-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+.add-post-form input[type="text"],
+.add-post-form textarea {
+    width: 100%; /* Simplificado gracias a box-sizing: border-box */
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid var(--border-color-darker);
+    border-radius: 4px;
+}
+.add-post-form textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+.form-row {
+    display: flex;
+    align-items: flex-end; /* Alinea el botón con la parte inferior del textarea */
+}
+.form-row textarea {
+    flex-grow: 1; /* El textarea ocupa el espacio restante */
+    margin-right: 10px; /* Espacio entre textarea y botón */
+}
+.add-post-form button {
+    padding: 0; /* Eliminamos padding para controlar tamaño con width/height */
+    width: 42px;  /* Ancho del botón */
+    height: 42px; /* Alto del botón */
+    background-color: var(--brand-primary);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex; /* Para centrar el icono SVG */
+    align-items: center; /* Centrado vertical del icono */
+    justify-content: center; /* Centrado horizontal del icono */
+    flex-shrink: 0; /* Evita que el botón se encoja */
+}
+.add-post-form button:hover {
+    background-color: var(--brand-primary-hover);
+}
+.add-post-form button svg {
+    display: block; /* Asegura que el SVG se comporte como un bloque */
+}
+.container {
+    /* ... otros estilos ... */
+    background-image: url('/static/images/corcho.png'); /* Ajusta 'textura_corcho.png' al nombre real de tu archivo */
+    background-color: var(--corkboard-bg); /* Color de respaldo si la imagen no carga */
+}
